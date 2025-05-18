@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 const corsOptions = {
-  origin: '',
+  origin: 'https://seo-task.onrender.com',
   credentials: true,
 };
 const _dirname = path.resolve();
