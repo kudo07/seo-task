@@ -2,7 +2,9 @@ require('dotenv').config();
 const express = require('express');
 const { google } = require('googleapis');
 const cors = require('cors');
-
+const cookieParser = require('cookie-parser');
+const path = require('path');
+//
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -86,8 +88,8 @@ app.get('/search-console-data', async (req, res) => {
   }
 });
 app.use(express.static(path.join(_dirname, '/client/dist')));
-app.get('*', (_, res) => {
-  res.sendFile(path.resolve(_dirname, 'client', 'dist', 'index.html'));
+app.get(/^\/(?!api).*/, (req, res) => {
+  res.sendFile(path.join(_dirname, 'client', 'dist', 'index.html'));
 });
 const PORT = 3001;
 app.listen(PORT, () => console.log(` Server running on port ${PORT}`));
