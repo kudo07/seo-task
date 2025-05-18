@@ -6,6 +6,16 @@ const cors = require('cors');
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(cors());
+app.use(express.json());
+app.use(urlencoded({ extended: false }));
+app.use(cookieParser());
+const corsOptions = {
+  origin: '',
+  credentials: true,
+};
+const _dirname = path.resolve();
+app.use(cors(corsOptions));
 
 const oAuth2Client = new google.auth.OAuth2(
   process.env.CLIENT_ID,
@@ -78,6 +88,9 @@ app.get('/search-console-data', async (req, res) => {
     res.status(500).send({ error: 'Search Console API request failed' });
   }
 });
-
+app.use(express.static(path.join(_dirname, '/client/dist')));
+app.get('*', (_, res) => {
+  res.sendFile(path.resolve(_dirname, 'client', 'dist', 'index.html'));
+});
 const PORT = 3001;
 app.listen(PORT, () => console.log(` Server running on port ${PORT}`));
